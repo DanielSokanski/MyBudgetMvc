@@ -1,0 +1,41 @@
+{% extends 'base1.html' %}
+
+{% block title %}Główne menu{% endblock %}
+
+{% block body %}
+		
+				<div class="row">
+			<div class="col-md-12 mt-4 text-md-center">
+				 <h2>Witaj </h2>
+				<p>W celu dodania wpłaty kliknij "Dodaj przychód" w górnym menu bądź na przycisk poniżej.</p>
+				<p>Przycisk "Dodaj wydatek" pozwola dodać Twój każdy poniesiony koszt.</p>
+				<p>Przycisk "Sprawdź bilans" pozwoli na graficzne i tabelaryczne przedstawienie stanu twoich finansów w danym okresie czasu.</p>
+				<p>"Ustawienia" pozwolą w pełni modyfikować zawartość programu, aby w pełni mógł spełnić Twoje oczekiwania.</p>
+				
+			</div>
+
+		</div>
+		<div class="row">
+		<nav class="col-sm-12">
+			<div class="tile col-sm-2 d-inline-block">
+				<a href="addincome.php" class="tilelink text-light"><i class="icon-plus-1"></i><br/>Dodaj przychód</a>
+			</div>
+			<div class="tile col-sm-2 d-inline-block">
+				<a href="addexpence.php" class="tilelink text-light"><i class="icon-minus-1"></i><br/>Dodaj wydatek</a>
+			</div>
+			<div class="tile col-sm-2 d-inline-block">
+				<a href="bilans.php?okres=Bieżący+miesiąc" class="tilelink text-light"><i class="icon-chart-bar"></i><br/>Przeglądaj bilans</a>
+			</div>
+			<div class="tile col-sm-2 d-inline-block">
+				<a href="settings.php" class="tilelink text-light"><i class="icon-tasks"></i><br/>Ustawienia</a>
+			</div>
+			<div class="tile col-sm-2 d-inline-block">
+				<a href="logout.php" class="tilelink text-light"><i class="icon-logout"></i><br/>Wyloguj się</a>
+			</div>
+		</nav>
+		</div>
+	
+			
+
+
+{% endblock %}

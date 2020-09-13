@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Rejestracja i logowanie{% endblock %}
+
+{% block body %}
+
+    <header>
+		<div class="logo">
+			<h1> BUDŻET DOMOWY </h1>
+			<p> Kompleksowo zarządzaj swoim budżetem domowym </p>
+		</div>
+	</header>
+
+	<main class="mb-5">
+	
+	<div class="container">
+	<div class="row">
+		<article>
+			<div class="col-sm-6 col-md-4 mt-4 pb-2" id="login">
+			<form action="/mainmenu" method="post">
+					<h2> Zaloguj się </h2>
+					<p></p>
+					<p><input type="text" name="name1" placeholder="Imię" required></p>
+					<p><input type="password" name="haslo2" id="haslo" placeholder="Hasło" required></p>
+					<p><input type="checkbox" name="remember_me" {% if remember_me %} checked="checked"{% endif %} > Zapamiętaj mnie</p>
+					<input type="submit" value="Zaloguj się">
+			</form>	
+
+	</div>
+			
+			<div class="col-sm-6 col-md-4 mt-4 pb-2" id="register">
+			<form method="post" action="/signup/create" id="formSignup">
+					<h2> Zarejestruj się </h2>
+					<p></p>
+					<p><input type="text"  name="name" placeholder="Imię" required></p>
+					<p><input type="text" name="email" placeholder="Adres mailowy" required></p>
+					<p><input type="password" name="password" placeholder="Hasło" required></p>
+					
+					<input type="submit" value="Zapisz"> 
+					<input type="reset" value="Wyczyść dane"> 
+					</form>
+			</div>
+	
+		</article>
+		</div>
+		</div>
+	</main>
+	<footer>
+	<br />
+		<div class="mt-5 pt-5">&copy; Wszelkie prawa zastrzeżone. Autor: Daniel Sokański  </div>
+	</footer>
+
+{% endblock %}
