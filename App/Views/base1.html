@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}{% endblock %}</title>
 	<meta name="description" content="Aplikacja do zarządzania domowym budżetem">
 	<meta name="keywords" content="budżet, wydatek, przychód, bilans">
 	<meta name="author" content="Daniel Sokanski">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/styles.css" />
+  
+    <link rel="stylesheet" href="/css/styles.css" />
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/fontello.css" type="text/css"/>
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&amp;subset=latin-ext" rel="stylesheet">
 </head>
 <body>
 
 <header>
-		<div class="logo">
+		<div class="logo text-center">
 			<h1> BUDŻET DOMOWY </h1>
 			<p> Kompleksowo zarządzaj swoim budżetem domowym </p>
 		</div>
-	</header>
-	<div class="container">
-	<main>
-		<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+</header>
+
+
+				<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
 			
 			
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Przełącznik nawigacji">
@@ -31,47 +34,48 @@
 			
 				<ul class="navbar-nav mr-auto">
 				
-					<li class="nav-item active">
-						<a class="nav-link" href="mainmenu.php"> Menu główne </a>
+					<li class="nav-item  mx-5">
+						<a class="nav-link" href="/mainmenu.php"> Menu główne </a>
 					</li>
 					
-					<li class="nav-item">
-						<a class="nav-link" href="addincome.php"> Dodaj przychód </a>
+					<li class="nav-item  mx-5">
+						<a class="nav-link" href="/addincome.php"> Dodaj przychód </a>
 					</li>
 					
-					<li class="nav-item">
-						<a class="nav-link" href="addexpence.php"> Dodaj wydatek </a>
+					<li class="nav-item  mx-5">
+						<a class="nav-link" href="/addexpence.php"> Dodaj wydatek </a>
 					</li>
 					
-					<li class="nav-item">
-						<a class="nav-link" href="bilans.php?okres=Bieżący+miesiąc"> Sprawdź bilans </a>
+					<li class="nav-item  mx-5">
+						<a class="nav-link" href="/bilans.php?okres=Bieżący+miesiąc"> Sprawdź bilans </a>
 					</li>
 					
-					<li class="nav-item">
-						<a class="nav-link" href="settings.php"> Ustawienia </a>
-					</li>
-					
-					<li class="nav-item">
-						<a class="nav-link" href="logout.php"> Wyloguj się </a>
-					</li>
-					
+					<li class="nav-item  mx-5">
+						<a class="nav-link" href="/settings.php"> Ustawienia </a>
+					</li>		
 				</ul>
 			
 				
 					<input type="button" value="Wyloguj się" onclick="window.location.href='logout.php';" />
+
+				
 			
 			</div>
 		</nav>
-				
-			
+					
+        {% block body %}
+		
+        {% endblock %}		
+	<footer>
+		<div class="mt-5 text-center">&copy; Wszelkie prawa zastrzeżone. Autor: Daniel Sokański  </div>
+	</footer>
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
 
-    {% block footer %}
-		<footer>
-		<div class="mt-5">&copy; Wszelkie prawa zastrzeżone. Autor: Daniel Sokański  </div>
-		</footer>
+    
+		
+		{% block footer %}
     {% endblock %}
 </body>
 </html>

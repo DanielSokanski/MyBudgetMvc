@@ -77,15 +77,7 @@ class Auth
         $_SESSION['return_to'] = $_SERVER['REQUEST_URI'];
     }
 
-    /**
-     * Get the originally-requested page to return to after requiring login, or default to the homepage
-     *
-     * @return void
-     */
-    public static function getReturnToPage()
-    {
-        return $_SESSION['return_to'] ?? '/';
-    }
+
 
     /**
      * Get the current logged-in user, from the session or the remember-me cookie

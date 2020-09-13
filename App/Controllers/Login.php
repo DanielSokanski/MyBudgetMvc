@@ -32,7 +32,7 @@ class Login extends \Core\Controller
      */
     public function createAction()
     {
-        $user = User::authenticate($_POST['email'], $_POST['password']);
+        $user = User::authenticate($_POST['email1'], $_POST['haslo2']);
         
         $remember_me = isset($_POST['remember_me']);
 
@@ -42,7 +42,8 @@ class Login extends \Core\Controller
 
             Flash::addMessage('Login successful');
 
-            $this->redirect(Auth::getReturnToPage());
+            View::renderTemplate('MainMenu/index.html');
+			
 
         } else {
 

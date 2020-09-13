@@ -1,0 +1,6 @@
+
+.icon-logout:before { content: '\e800'; } /* '' */
+.icon-chart-bar:before { content: '\e801'; } /* '' */
+.icon-plus-1:before { content: '\e805'; } /* '' */
+.icon-minus-1:before { content: '\e806'; } /* '' */
+.icon-tasks:before { content: '\f0ae'; } /* '' */

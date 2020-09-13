@@ -17,10 +17,10 @@
 	<div class="row">
 		<article>
 			<div class="col-sm-6 col-md-4 mt-4 pb-2" id="login">
-			<form action="/mainmenu" method="post">
+			<form action="/login/create" method="post">
 					<h2> Zaloguj się </h2>
 					<p></p>
-					<p><input type="text" name="name1" placeholder="Imię" required></p>
+					<p><input type="text" name="email1" placeholder="Adres mailowy" required></p>
 					<p><input type="password" name="haslo2" id="haslo" placeholder="Hasło" required></p>
 					<p><input type="checkbox" name="remember_me" {% if remember_me %} checked="checked"{% endif %} > Zapamiętaj mnie</p>
 					<input type="submit" value="Zaloguj się">
