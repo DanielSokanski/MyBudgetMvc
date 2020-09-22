@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Strona glowna{% endblock %}
+
+{% block body %}
+		<div class="container">
+			<div class="row">
+		
+			<div class="col-sm-6 col-md-12 mt-4 text-center text-dark font-weight-bold">
+				<h2>Dodaj wydatek</h2>
+				<p>Wypełnij poniższy formularz i zatwierdź by wprowadzić dane do programu.</p>
+			</div>
+			</div>
+			<div class="row">
+
+				<div class="col-sm-6 col-md-6 mt-5 text-dark font-weight-bold text-right" id="value">
+					<p><label> Podaj kwotę  </label></p>
+					<p><label> Data  </label> </p>
+					<p><label> Sposób płatności</label></p><br /><br /><br /><br />
+					<p><label> Kategoria </label></p>
+					<p><label> Komentarz </label></p>
+				</div>
+				
+				<div class="col-sm-6 col-md-6 text-left mt-3">
+				<form method="post"  action="/account/addExpence">
+					<p><input class="ml-4" type="text" name="kwota" reqired></p>
+					<p><input class="ml-4" type="date" name="data" reqired></p>
+					<p><fieldset>	
+						<p><label><input type="radio" value="Gotowka" name="zaplata" checked> Gotówka </label></p>
+						<p><label><input type="radio" value="Karta debetowa" name="zaplata"> Karta debetowa </label></p>
+						<p><label><input type="radio" value="Karta kredytowa" name="zaplata"> Karta kredytowa </label></p>
+					</fieldset></p>
+					<p><select id="kategoria" name="kategoria">
+							<option value="Jedzenie" name="Jedzenie" selected>Jedzenie</option>
+							<option value="Mieszkanie" name="Mieszkanie">Mieszkanie</option>
+							<option value="Transport" name="Transport">Transport</option>
+							<option value="Telekomunikacja" name="Telekomunikacja">Telekomunikacja</option>
+							<option value="Opieka zdrowotna" name="Opieka zdrowotna">Opieka zdrowotna</option>
+							<option value="Ubranie" name="Ubranie">Ubranie</option>
+							<option value="Higiena" name="Higiena">Higiena</option>
+							<option value="Dzieci" name="Dzieci">Dzieci</option>
+							<option value="Rozrywka" name="Rozrywka">Rozrywka</option>
+							<option value="Szkolenia" name="Szkolenia">Szkolenia</option>
+							<option value="Książki" name="Książki">Książki</option>
+							<option value="Oszczędności" name="Oszczędności">Oszczędności</option>
+							<option value="Na złotą jesień, czyli emeryturę" name="Na złotą jesień, czyli emeryturę">Na złotą jesień, czyli emeryturę</option>
+							<option value="Spłata długów" name="Spłata długów">Spłata długów</option>
+							<option value="Darowizna" name="Darowizna">Darowizna</option>
+							<option value="Inne wydatki" name="Inne wydatki">Inne wydatki</option>
+						</select></p>
+						<p><textarea name="komentarz" id="komentarz" rows="3" cols="30" ></textarea></p>
+						<input class="mr-2 bg-success" type="submit" value="Dodaj">
+				</div>
+				
+		</div>
+		</div>
+		<footer>
+		
+			<div class="my-5"><p>&copy; Wszelkie prawa zastrzeżone. Autor: Daniel Sokański </p> </div>
+		</footer>
+
+
+{% endblock %}

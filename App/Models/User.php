@@ -49,10 +49,103 @@ class User extends \Core\Model
 
             $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
 
-    
-
             $sql = 'INSERT INTO users (username,email,password_hash)
                     VALUES (:name, :email, :password_hash)';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+			
+            $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+			$stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
+            $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
+			
+            $stmt->execute();
+			
+					$sql1 = 'CREATE TABLE incomes_category_assigned_to_users :id
+											(id INT(11)NOT NULL AUTO_INCREMENT,
+											user_id INT(11) NOT NULL,
+											name VARCHAR(50) NOT NULL,
+											PRIMARY KEY (id))
+											SELECT name FROM incomes_category_default';
+
+            $db = static::getDB();
+            $stmt1= $db->prepare($sql1);
+			 $stmt->bindValue(':id', $this->id, PDO::PARAM_STR);
+			return $stmt1->execute();
+        }
+
+        return false;
+    }
+
+	    public function copyIncomeTable($id)
+	{
+		$sql ="UPDATE incomes_category_assigned_to_users :id SET user_id= :id WHERE user_id = 0";
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+			$stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+			return $stmt->execute();
+	}
+	public function expenceTable()
+	{
+		$sql = "CREATE TABLE expenses_category_assigned_to_users :id
+											(id INT(11)NOT NULL AUTO_INCREMENT,
+											user_id INT(11) NOT NULL,
+											name VARCHAR(50) NOT NULL,
+											PRIMARY KEY (id))
+											SELECT name FROM expenses_category_default";
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+			$stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+			return $stmt->execute();
+	}
+	public function copyExpenceTable($id)
+	{
+		$sql = "UPDATE expenses_category_assigned_to_users :id SET user_id= :id WHERE user_id = 0";
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+			$stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+			return $stmt->execute();
+	}
+		public function paymentMethod()
+	{
+		$sql = "CREATE TABLE payment_methods_assigned_to_users :id 
+											(id INT(11)NOT NULL AUTO_INCREMENT,
+											user_id INT(11) NOT NULL,
+											name VARCHAR(50) NOT NULL,
+											PRIMARY KEY (id))
+											SELECT name FROM payment_methods_default";
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+			$stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+			return $stmt->execute();
+	}
+		public function copyPaymentMethod()
+	{
+		$sql = "UPDATE payment_methods_assigned_to_users :id SET user_id= :id WHERE user_id = 0";
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+			$stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+			return $stmt->execute();
+	}
+	public function addExpence()
+    {
+		$id = $POST['id'];
+		$dlugosckwoty=strlen($POST['kwota']);
+
+		for($i=0;$i<$dlugosckwoty;$i++)
+		{
+			if($POST['kwota'][$i]==',')
+			{
+				$POST['kwota'][$i]='.';
+			}
+		}
+		
+            $sql = "SELECT * FROM expenses_category_assigned_to_users".$id." WHERE name=".$this->kategoria."";
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -64,9 +157,6 @@ class User extends \Core\Model
        
             return $stmt->execute();
         }
-
-        return false;
-    }
 
     /**
      * Validate current property values, adding valiation error messages to the errors array property
@@ -228,4 +318,5 @@ class User extends \Core\Model
 
         return false;
     }
+	
 }
