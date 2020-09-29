@@ -48,90 +48,51 @@ class User extends \Core\Model
         if (empty($this->errors)) {
 
             $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
-
             $sql = 'INSERT INTO users (username,email,password_hash)
                     VALUES (:name, :email, :password_hash)';
-
             $db = static::getDB();
             $stmt = $db->prepare($sql);
-			
             $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
 			$stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
             $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
-			
-            $stmt->execute();
-			
-					$sql1 = 'CREATE TABLE incomes_category_assigned_to_users :id
-											(id INT(11)NOT NULL AUTO_INCREMENT,
-											user_id INT(11) NOT NULL,
-											name VARCHAR(50) NOT NULL,
-											PRIMARY KEY (id))
-											SELECT name FROM incomes_category_default';
-
+           $stmt->execute();
+		   
+		   $sql1='INSERT INTO incomes_category_assigned_to_users (name) SELECT name FROM incomes_category_default';
             $db = static::getDB();
             $stmt1= $db->prepare($sql1);
-			 $stmt->bindValue(':id', $this->id, PDO::PARAM_STR);
-			return $stmt1->execute();
-        }
+			 $stmt1->execute();
+			 
+			 $sql2 = 'INSERT INTO expences_category_assigned_to_users (name) SELECT  name FROM expenses_category_default';
+            $db = static::getDB();
+            $stmt2 = $db->prepare($sql2);
+			 $stmt2->execute();
+			 
+			 $sql3 = 'INSERT INTO payment_methods_assigned_to_users (name) SELECT name FROM payment_methods_default';
+            $db = static::getDB();
+            $stmt3 = $db->prepare($sql3);
+			 $stmt3->execute();
 
+			 $sql11='UPDATE  incomes_category_assigned_to_users  SET incomes_category_assigned_to_users.user_id=(SELECT users.id FROM users ORDER BY users.id DESC LIMIT 1) WHERE incomes_category_assigned_to_users.user_id=0';
+			 $db = static::getDB();
+			 $stmt11= $db->prepare($sql11);
+			 $stmt11->execute();
+			 
+			  $sql22='UPDATE  expences_category_assigned_to_users  SET expences_category_assigned_to_users.user_id=(SELECT users.id FROM users ORDER BY users.id DESC LIMIT 1) WHERE expences_category_assigned_to_users.user_id=0';
+			 $db = static::getDB();
+            $stmt22= $db->prepare($sql22);
+			 $stmt22->execute();
+			 
+			 $sql33='UPDATE  payment_methods_assigned_to_users  SET payment_methods_assigned_to_users.user_id=(SELECT users.id FROM users ORDER BY users.id DESC LIMIT 1) WHERE payment_methods_assigned_to_users.user_id=0';
+			 $db = static::getDB();
+            $stmt33= $db->prepare($sql33);
+			 $stmt33->execute();
+
+			 return true;
+        }
         return false;
     }
 
-	    public function copyIncomeTable($id)
-	{
-		$sql ="UPDATE incomes_category_assigned_to_users :id SET user_id= :id WHERE user_id = 0";
 
-            $db = static::getDB();
-            $stmt = $db->prepare($sql);
-			$stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-			return $stmt->execute();
-	}
-	public function expenceTable()
-	{
-		$sql = "CREATE TABLE expenses_category_assigned_to_users :id
-											(id INT(11)NOT NULL AUTO_INCREMENT,
-											user_id INT(11) NOT NULL,
-											name VARCHAR(50) NOT NULL,
-											PRIMARY KEY (id))
-											SELECT name FROM expenses_category_default";
-
-            $db = static::getDB();
-            $stmt = $db->prepare($sql);
-			$stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-			return $stmt->execute();
-	}
-	public function copyExpenceTable($id)
-	{
-		$sql = "UPDATE expenses_category_assigned_to_users :id SET user_id= :id WHERE user_id = 0";
-
-            $db = static::getDB();
-            $stmt = $db->prepare($sql);
-			$stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-			return $stmt->execute();
-	}
-		public function paymentMethod()
-	{
-		$sql = "CREATE TABLE payment_methods_assigned_to_users :id 
-											(id INT(11)NOT NULL AUTO_INCREMENT,
-											user_id INT(11) NOT NULL,
-											name VARCHAR(50) NOT NULL,
-											PRIMARY KEY (id))
-											SELECT name FROM payment_methods_default";
-
-            $db = static::getDB();
-            $stmt = $db->prepare($sql);
-			$stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-			return $stmt->execute();
-	}
-		public function copyPaymentMethod()
-	{
-		$sql = "UPDATE payment_methods_assigned_to_users :id SET user_id= :id WHERE user_id = 0";
-
-            $db = static::getDB();
-            $stmt = $db->prepare($sql);
-			$stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-			return $stmt->execute();
-	}
 	public function addExpence()
     {
 		$id = $POST['id'];

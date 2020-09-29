@@ -32,18 +32,12 @@ class Signup extends \Core\Controller
     {
         $user = new User($_POST);
 
-        if ($user->save()) {
+        if (($user->save())  {
 		
-			$user->copyIncomeTable();
-			$user->expenceTable();
-			$user->copyExpenceTable();
-			$user->paymentMethod();
-			$user->copyPaymentMethod();
-			
             $this->redirect('/signup/success');
 
         } else {
-
+			Flash::addMessage('Uzytkownik istneje');
             View::renderTemplate('Login/new.html', [
                 'user' => $user
             ]);
