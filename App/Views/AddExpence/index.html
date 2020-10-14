@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base1.html' %}
 
 {% block title %}Strona glowna{% endblock %}
 
@@ -13,7 +13,7 @@
 			</div>
 			<div class="row">
 
-				<div class="col-sm-6 col-md-6 mt-5 text-dark font-weight-bold text-right" id="value">
+				<div class="col-sm-6 col-md-6 mt-4 text-dark font-weight-bold text-right" id="value">
 					<p><label> Podaj kwotę  </label></p>
 					<p><label> Data  </label> </p>
 					<p><label> Sposób płatności</label></p><br /><br /><br /><br />
@@ -22,7 +22,7 @@
 				</div>
 				
 				<div class="col-sm-6 col-md-6 text-left mt-3">
-				<form method="post"  action="/account/addExpence">
+				<form method="post"  action="/account/addRecordExpense">
 					<p><input class="ml-4" type="text" name="kwota" reqired></p>
 					<p><input class="ml-4" type="date" name="data" reqired></p>
 					<p><fieldset>	
@@ -54,10 +54,7 @@
 				
 		</div>
 		</div>
-		<footer>
 		
-			<div class="my-5"><p>&copy; Wszelkie prawa zastrzeżone. Autor: Daniel Sokański </p> </div>
-		</footer>
 
 
 {% endblock %}

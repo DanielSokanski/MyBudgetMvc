@@ -1,0 +1,64 @@
+{% extends 'base1.html' %}
+
+{% block title %}Strona glowna{% endblock %}
+
+{% block body %}
+	<div class=container>	
+		<div class="row">
+			<div class="col-sm-12 col-md-12 mt-4 text-dark text-center">
+				<h2><b> Bilans </b></h2>
+				<h4>Sprawdź czy w danym okresie czasu udało Ci się zaoszczędzić.</h4>
+			</div>
+		</div>
+		<div class="row">
+		<div class="col-sm-12 col-md-12 mt-2 text-center text-dark">
+			<h5> Z jakiego zakresu czasowego chcesz zobaczyć swój bilans? </h5>
+			<p>Wybierz z poniższych list</p>
+			
+			<form  id="okresczasu" method="post">
+				<div class="col-sm-6col-md-6 mt-4 text-center text-dark d-inline-block text-right">
+				<select id="okres" name="okres">
+					<option value="Bieżący miesiąc" name="Bieżący miesiąc" selected>Bieżący miesiąc</option>
+					<option value="Poprzedni miesiąc" name="Poprzedni miesiąc">Poprzedni miesiąc</option>
+					<option value="Bieżący rok" name="Bieżący rok">Bieżący rok</option>
+				</select>
+				</div>
+				<div class="col-sm-6col-md-6 mt-4 text-center text-dark d-inline-block">
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#niestandard">Niestandardowy okres</button>
+				</div>
+				
+			<br><input type="submit" id="startrunning" value="Wybierz">
+			
+		</div>
+			</form>
+		  <div class="modal" id="niestandard" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+					<form id="myform" method="post" action="">
+						<label>Data początkowa<input class="ml-4" type="date" name="data_pocz"  required></label>
+						<label>Data końcowa<input class="ml-4" type="date" name="data_kon" required></label>
+					</div>
+					<div class="modal-footer">
+						<input type="submit" value="Zapisz daty" class="btn btn-success btn-lg marginTop" />
+					</div>
+					</form >
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-3 col-md-6 mt-4 text-center bg-success text-light">
+			<h3 class="text-center">  Przychody </h3>
+				   <div class="border col-sm-5 col-md-5 mt-1 text-center bg-success text-light d-inline-block">Kategoria</div> <div class="border col-sm-5 col-md-5 mt-1 text-center bg-success text-light d-inline-block">Kwota [zł]</div>
+		
+	
+		</div>
+		<div class="col-sm-6 col-md-6 mt-4 text-center bg-warning text-dark">
+			<h3 class="text-center">  Koszty </h3>
+				   <div class="border col-sm-5 col-md-5 mt-1 text-center bg-warning text-dark d-inline-block" >Kategoria</div> <div class="border col-sm-5 col-md-5 mt-1 text-center bg-warning text-dark d-inline-block">Kwota [zł]</div> 
+		
+		</div>
+		</div>
+		
+
+	</div>
+{% endblock %}

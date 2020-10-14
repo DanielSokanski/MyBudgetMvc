@@ -5,6 +5,7 @@ namespace App\Controllers;
 use \App\Models\User;
 use \Core\View;
 use \App\Auth;
+use \App\Flash;
 
 /**
  * Account controller
@@ -25,28 +26,40 @@ class Account extends \Core\Controller
     {
         View::renderTemplate('MainMenu/index.html');
     }
-		    public function addExpenceAction()
+    public function bilansAction()
     {
-		$expence = User::addExpence($POST['kwota'],$POST['data'],$POST['zaplata'],$POST['kategoria'],$POST['komentarz']);
-		If ($expence)
-		{
-			
-			Flash::addMessage('Udało się! Dodałeś poprawnie wydatek.');
-		}
-        
+        View::renderTemplate('Bilans/index.html');
     }
-    /**
-     * Validate if email is available (AJAX) for a new signup or an existing user.
-     * The ID of an existing user can be passed in in the querystring to ignore when
-     * checking if an email already exists or not.
-     *
-     * @return void
-     */
-    public function validateEmailAction()
+		    public function addRecordExpenseAction()
     {
-        $is_valid = ! User::emailExists($_GET['email'], $_GET['ignore_id'] ?? null);
-        
-        header('Content-Type: application/json');
-        echo json_encode($is_valid);
+		$expense = new User($_POST);
+		
+		if ($expense->addRecordExpense())
+		{
+			View::renderTemplate('AddExpence/index.html');
+            Flash::addMessage('Udało się! Dodałeś poprawnie wydatek');
+            
+		}
+        else {
+			Flash::addMessage('Niepoprawne dane. Sprubuj ponownie.');
+            View::renderTemplate('AddExpence/index.html');
+        }
+    
+    }
+    public function addRecordIncomeAction()
+    {
+		$income = new User($_POST);
+		
+		if ($income->addRecordIncome())
+		{
+			View::renderTemplate('AddIncome/index.html');
+            Flash::addMessage('Udało się! Dodałeś poprawnie przychod');
+            
+		}
+        else {
+			Flash::addMessage('Niepoprawne dane. Sprubuj ponownie.');
+            View::renderTemplate('AddIncome/index.html');
+        }
+    
     }
 }

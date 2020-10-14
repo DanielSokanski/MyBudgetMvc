@@ -93,32 +93,122 @@ class User extends \Core\Model
     }
 
 
-	public function addExpence()
+	public function addRecordExpense()
     {
-		$id = $POST['id'];
-		$dlugosckwoty=strlen($POST['kwota']);
+        $user_id =  $_SESSION['user_id'];
+        
+		$dlugosckwoty=strlen($this->kwota);
 
 		for($i=0;$i<$dlugosckwoty;$i++)
 		{
-			if($POST['kwota'][$i]==',')
+			if($this->kwota[$i]==',')
 			{
-				$POST['kwota'][$i]='.';
+				$this->kwota[$i]='.';
 			}
 		}
-		
-            $sql = "SELECT * FROM expenses_category_assigned_to_users".$id." WHERE name=".$this->kategoria."";
+            
+            $payment_id = $this->selectPaymentId();
+            $expense_category_number = $this->selectExpenseCategory();
+
+            $sql = "INSERT INTO expenses  VALUES (NULL,:id_user, :expense_category, :payment ,:amount, :data, :komentarz)";
 
             $db = static::getDB();
-            $stmt = $db->prepare($sql);
-
-            $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
-			$stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
-            $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
+            $stmt5 = $db->prepare($sql);
+            $stmt5->bindValue(':id_user', $user_id, PDO::PARAM_INT);
+            $stmt5->bindValue(':expense_category', $expense_category_number, PDO::PARAM_INT);
+            $stmt5->bindValue(':payment', $payment_id, PDO::PARAM_INT);
+            $stmt5->bindValue(':amount', $this->kwota, PDO::PARAM_STR);
+            $stmt5->bindValue(':data', $this->data, PDO::PARAM_STR);
+            $stmt5->bindValue(':komentarz', $this->komentarz, PDO::PARAM_STR);
             
        
-            return $stmt->execute();
+            return $stmt5->execute();
         }
 
+
+        public function selectExpenseCategory()
+        {
+        $user_id = $_SESSION['user_id'];
+
+        $db = static::getDB();
+
+        $sql_select_category = "SELECT id FROM expences_category_assigned_to_users WHERE user_id = :user_id AND name = :expense_category";
+        $query_select_category = $db->prepare($sql_select_category);
+        $query_select_category->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $query_select_category->bindValue(':expense_category', $this->kategoria, PDO::PARAM_STR);
+        $query_select_category->execute();
+
+        $category_result = $query_select_category->fetch();
+
+        return $category_result['id'];
+        }
+
+        public function selectPaymentId()
+        {
+        $user_id = $_SESSION['user_id'];
+
+        $db = static::getDB();
+
+        $sql_select_payment = "SELECT id FROM payment_methods_assigned_to_users WHERE user_id = :user_id AND name = :payment";
+        $query_select_payment = $db->prepare($sql_select_payment);
+        $query_select_payment->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $query_select_payment->bindValue(':payment', $this->zaplata, PDO::PARAM_STR);
+        $query_select_payment->execute();
+
+        $payment_result = $query_select_payment->fetch();
+
+        return $payment_result['id'];
+        }
+
+
+
+
+        public function addRecordIncome()
+    {
+        $user_id =  $_SESSION['user_id'];
+        
+		$dlugosckwoty=strlen($this->kwota);
+
+		for($i=0;$i<$dlugosckwoty;$i++)
+		{
+			if($this->kwota[$i]==',')
+			{
+				$this->kwota[$i]='.';
+			}
+		}
+
+            $income_category_number = $this->selectIncomeCategory();
+
+            $sql = "INSERT INTO incomes  VALUES (NULL,:id_user, :income_category,:amount, :data, :komentarz)";
+
+            $db = static::getDB();
+            $stmt5 = $db->prepare($sql);
+            $stmt5->bindValue(':id_user', $user_id, PDO::PARAM_INT);
+            $stmt5->bindValue(':income_category', $income_category_number, PDO::PARAM_INT);
+            $stmt5->bindValue(':amount', $this->kwota, PDO::PARAM_STR);
+            $stmt5->bindValue(':data', $this->data, PDO::PARAM_STR);
+            $stmt5->bindValue(':komentarz', $this->komentarz, PDO::PARAM_STR);
+            
+       
+            return $stmt5->execute();
+        }
+
+        public function selectIncomeCategory()
+        {
+        $user_id = $_SESSION['user_id'];
+
+        $db = static::getDB();
+
+        $sql_select_category = "SELECT id FROM incomes_category_assigned_to_users WHERE user_id = :user_id AND name = :income_category";
+        $query_select_category = $db->prepare($sql_select_category);
+        $query_select_category->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $query_select_category->bindValue(':income_category', $this->kategoria, PDO::PARAM_STR);
+        $query_select_category->execute();
+
+        $category_result = $query_select_category->fetch();
+
+        return $category_result['id'];
+        }
     /**
      * Validate current property values, adding valiation error messages to the errors array property
      *
@@ -184,7 +274,21 @@ class User extends \Core\Model
 
         return $stmt->fetch();
     }
+	
+	  public static function findIdByEmail($email)
+    {
+        $sql = 'SELECT id FROM users WHERE email = :email';
 
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
 
     public static function authenticate($email1, $haslo2)
     {

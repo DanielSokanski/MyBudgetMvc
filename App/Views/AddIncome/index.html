@@ -1,50 +1,46 @@
-{% extends 'base.html' %}
+{% extends 'base1.html' %}
 
 {% block title %}Strona glowna{% endblock %}
 
 {% block body %}
-		<header>
-		<div class="logo text-center">
-			<h1> BUDŻET DOMOWY </h1>
-			<p> Kompleksowo zarządzaj swoim budżetem domowym </p>
-		</div>
-	</header>
-	<div class="container">
-	<div class="row">
-		
-			<div class="col-sm-12 mt-4 text-danger font-weight-bold text-center">
-				<p>Jak często zdarzało Ci się przeszacowywać swoje wydatki?</p>
-				<p>Czy planując większy wydatek zachodziłeś w głowę jak to zaplanować? </p>
-				<p>Jak często traciłeś orientacje w sprawach domowych finansów? </p>
+	<div class=container>	
+
+		<div class="row">
+
+			<div class="col-sm-6 col-md-12 mt-4 text-dark font-weight-bold text-center">
+				<h2>Dodaj przychód</h2>
+				<p>Wypełnij poniższy formularz i zatwierdź by wprowadzić dane do programu.</p>
 			</div>
-			<div class="col-sm-12 mt-4 text-center">
-				<span class="boldtext ">ROZWIĄZENIE JEST W ZASIĘGU TWOJEJ RĘKI</span>
-			</div>
-			<div class="col-sm-12 mt-4 text-dark font-weight-bold text-center">
-				<p>Proste, intuicyjne narzędzie do codziennego użytku, </p><p> które pozwoli Ci na bieżącą kontrolę przychodów i wydatków. </p>
-				<p>Proces dodania kolejnej wpłaty lub wypłaty jest możliwy </p><p> nawet stojąc w kolejce w sklepie czy na stacji benzynowej. </p>
-				<p>Program posiada zadeklarowene odgórnie metody płatności,</p><p>jednakże jeżeli masz ochote możesz dodawać, usuwać i edytować pola.</p>
-			</div>
-			<div class="col-sm-12 mt-4 text-dark mb-2 text-center">
-				<span class="boldtext">NIE ZASTANAWIAJ SIĘ DŁUŻEJ I OD DZIŚ W PEŁNI KONTROLUJ SWÓJ PORTFEL</span>
-			</div>
+
 		</div>
 		<div class="row">
-		<nav class="newuser text-center">
-			<div class="col-sm-6 d-inline-block" id="index-login">
 				
-				<label class="text-dark text-uppercase text-md-center font-weight-bold"> Masz konto? </label> <br> <input class="bg-dark text-light " type="button" value="Zaloguj się" onclick="window.location.href='/login'" />
-					 
-			</div>
-			<div class="col-sm-6 d-inline-block" id="index-register">
-				<label  class="text-dark text-uppercase text-md-center font-weight-bold"> Jeszcze nie korzystasz? </label> <br> <input class="bg-dark text-light" type="button" value="Zarejestruj się" onclick="window.location.href='/login'" />
-			</div>
-		</nav>
-		</div>
-		<footer>
 		
-			<div class="mt-5">&copy; Wszelkie prawa zastrzeżone. Autor: Daniel Sokański  </div>
-		</footer>
+				<div class="col-sm-6 col-md-6 text-dark text-right mt-3 font-weight-bold" >
+					<p> Podaj kwotę  </p>
+					<p> Data  </p>
+					<p> Kategoria </p>
+					<p> Komentarz </p>
+				</div>
+				
+				<div class="col-sm-6 col-md-6 text-md-left mt-3">
+					<form method="post" action="/account/addRecordIncome">
+						<p><input class="ml-4" type="text" name="kwota" reqired></p>
+						<p><input class="ml-4" type="date" name="data" reqired></p>
+						<p><select id="kategoria" name="kategoria">
+							<option value="Wynagrodzenie" name="Wynagrodzenie" selected>Wynagrodzenie</option>
+							<option value="Odsetki bankowe"  name="Odsetki bankowe"  >Odsetki bankowe</option>
+							<option value="Sprzedaż na allegro"  name="Sprzedaż na allegro" >Sprzedaż na allegro</option>
+							<option value="Inne"  name="Inne" >Inne</option>
+						</select></p>
+						<textarea name="komentarz" id="komentarz" rows="3" cols="30" ></textarea></p>
+						<input class="mr-2 bg-success" type="submit" value="Dodaj">
+						
+					</form>
+				</div>
 
 
+		</div>
+
+	</div>	
 {% endblock %}
