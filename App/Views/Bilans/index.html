@@ -1,9 +1,29 @@
 {% extends 'base1.html' %}
 
 {% block title %}Strona glowna{% endblock %}
-
+{% block script %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+ google.charts.load("current", {packages:["corechart"]});
+  google.charts.setOnLoadCallback(drawChart);
+		function drawChart() 
+  {
+	var data = google.visualization.arrayToDataTable([
+	  ['category', 'value'],
+	  {% for expense in expenses %}
+['{{ expense.Category }}',{{ expense.Amount }}],		
+	  {% endfor %}		
+	]);
+	var options = {
+	  title: 'Wydatki we wskazanym okresie czasu',
+	  is3D: true,
+	};
+	var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+	chart.draw(data, options);
+  }
+</script>{% endblock %}
 {% block body %}
-	<div class=container>	
+	<div class="container">	
 		<div class="row">
 			<div class="col-sm-12 col-md-12 mt-4 text-dark text-center">
 				<h2><b> Bilans </b></h2>
@@ -13,52 +33,93 @@
 		<div class="row">
 		<div class="col-sm-12 col-md-12 mt-2 text-center text-dark">
 			<h5> Z jakiego zakresu czasowego chcesz zobaczyć swój bilans? </h5>
-			<p>Wybierz z poniższych list</p>
+			<p>Wybierz z poniższej listy</p>
 			
-			<form  id="okresczasu" method="post">
-				<div class="col-sm-6col-md-6 mt-4 text-center text-dark d-inline-block text-right">
-				<select id="okres" name="okres">
-					<option value="Bieżący miesiąc" name="Bieżący miesiąc" selected>Bieżący miesiąc</option>
-					<option value="Poprzedni miesiąc" name="Poprzedni miesiąc">Poprzedni miesiąc</option>
-					<option value="Bieżący rok" name="Bieżący rok">Bieżący rok</option>
-				</select>
-				</div>
-				<div class="col-sm-6col-md-6 mt-4 text-center text-dark d-inline-block">
-					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#niestandard">Niestandardowy okres</button>
-				</div>
+
+			<div class="dropdown">
 				
-			<br><input type="submit" id="startrunning" value="Wybierz">
+                <div class="dropdown-content" aria-labelledby="dropdownContent">
+                    <a href="/account/current" class="dropdown-item">1. Bieżący miesiąc</a>
+                    <a href="/account/previous" class="dropdown-item">2. Poprzedni miesiąc</a>
+                    <a href="/account/year" class="dropdown-item">3. Bieżący rok</a>
+                </div>
+			</div>
+		
 			
-		</div>
-			</form>
-		  <div class="modal" id="niestandard" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-					<form id="myform" method="post" action="">
-						<label>Data początkowa<input class="ml-4" type="date" name="data_pocz"  required></label>
-						<label>Data końcowa<input class="ml-4" type="date" name="data_kon" required></label>
+			<div class="col-sm-6col-md-6 text-center text-dark">
+				<button type="button" class="btn bg-light" data-toggle="modal" data-target="#dateModal">4. Niestandardowy okres</button>
+			</div>
+
+
+			<div class="modal" tabindex="-1" role="dialog" id="dateModal">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Wybierz zakres dat:</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<form action="/account/modal" method='post'>
+							<div class="modal-body">
+								<p>Zakres od:</p>
+								<input type="date" name="first_date">
+								<span>do</span>
+								<input type="date" name="second_date">
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+								<button type="submit" class="btn btn-primary">Zapisz</button>
+							</div>
+						</form>
 					</div>
-					<div class="modal-footer">
-						<input type="submit" value="Zapisz daty" class="btn btn-success btn-lg marginTop" />
-					</div>
-					</form >
 				</div>
 			</div>
-		</div>
-		<div class="col-sm-3 col-md-6 mt-4 text-center bg-success text-light">
+
+		<div class="col-sm-4 col-md-5 mt-4 text-center bg-success text-light d-inline-block">
 			<h3 class="text-center">  Przychody </h3>
-				   <div class="border col-sm-5 col-md-5 mt-1 text-center bg-success text-light d-inline-block">Kategoria</div> <div class="border col-sm-5 col-md-5 mt-1 text-center bg-success text-light d-inline-block">Kwota [zł]</div>
-		
+				   <div class="border col-sm-5 col-md-5 mt-1 text-center bg-success text-light font-weight-bold d-inline-block">Kategoria</div> 
+
+				   <div class="border col-sm-5 col-md-5 mt-1 text-center bg-success text-light font-weight-bold d-inline-block">Kwota [zł]</div>
+				   {% for income in incomes %}
+				   <div class="border col-sm-5 col-md-5 mt-1 text-center bg-success text-light d-inline-block">{{ income.Category }}</div> 
+				   <div class="border col-sm-5 col-md-5 mt-1 text-center bg-success text-light d-inline-block">{{ income.Amount }} zł </div>
+				   {% endfor %}
+				   <div class="border col-sm-5 col-md-5 mt-1 text-center bg-success text-dark font-weight-bold d-inline-block" >Razem</div>
+				   <div class="border col-sm-5 col-md-5 mt-1 text-center bg-success text-dark font-weight-bold d-inline-block" >{{ totalIncomesAmount }} zł</div>
 	
 		</div>
-		<div class="col-sm-6 col-md-6 mt-4 text-center bg-warning text-dark">
+		<div class="col-sm-4 col-md-5 mt-4 text-center bg-warning text-dark d-inline-block">
 			<h3 class="text-center">  Koszty </h3>
-				   <div class="border col-sm-5 col-md-5 mt-1 text-center bg-warning text-dark d-inline-block" >Kategoria</div> <div class="border col-sm-5 col-md-5 mt-1 text-center bg-warning text-dark d-inline-block">Kwota [zł]</div> 
-		
-		</div>
-		</div>
-		
+				   <div class="border col-sm-5 col-md-5 mt-1 text-center bg-warning text-dark font-weight-bold d-inline-block" >Kategoria</div> 
+				   <div class="border col-sm-5 col-md-5 mt-1 text-center bg-warning text-dark font-weight-bold d-inline-block">Kwota [zł]</div> 
 
+				   {% for expense in expenses %}
+				   <div class="border col-sm-5 col-md-5 mt-1 text-center bg-warning text-dark d-inline-block" >{{ expense.Category }}</div>
+				   <div class="border col-sm-5 col-md-5 mt-1 text-center bg-warning text-dark d-inline-block">{{ expense.Amount }} zł</div>
+				   {% endfor %}
+				   <div class="border col-sm-5 col-md-5 mt-1 text-center bg-warning text-dark font-weight-bold d-inline-block" >Razem</div>
+				   <div class="border col-sm-5 col-md-5 mt-1 text-center bg-warning text-dark font-weight-bold d-inline-block" >{{ totalExpensesAmount }} zł</div>
+
+		</div>
+		</div>
+		
+		<div class="col-sm-12 col-md-12 mt-4 text-dark bg-light font-weight-bold text-center">
+			{% if  (totalIncomesAmount - totalExpensesAmount >= 0) %}
+            	{{ balance }} zł
+                <p class="card-footer text-success bg-success font-weight-bold text-center">Gratulacje. Świetnie zarządzasz finansami!</p>
+			{% endif %}
+			
+			{% if  (totalIncomesAmount - totalExpensesAmount < 0) %}
+            	{{ balance }} zł
+                <p class="card-footer text-danger bg-warning font-weight-bold text-center">Uważaj, wpadasz w długi!</p>
+            {% endif %}
+		</div>
+		<div class="col-sm-12 col-md-12 mt-4 text-dark text-center"></div>
+		{% if (balance)!=0 %}
+		<div id="piechart_3d" style="width:100%;height:400px;margin-left:auto;margin-right:auto;display:inline-block;"></div>
+		{% endif %}
+		</div>
+	</div>
 	</div>
 {% endblock %}

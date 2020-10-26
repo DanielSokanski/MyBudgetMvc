@@ -12,6 +12,10 @@
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/fontello.css" type="text/css"/>
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&amp;subset=latin-ext" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	{% block script %}{% endblock %}
+
 </head>
 <body>
 
@@ -52,12 +56,10 @@
 					
 					<li class="nav-item  mx-5">
 						<a class="nav-link" href="/settings.php"> Ustawienia </a>
-					</li>		
-				</ul>
-			
+					</li>	
 				
-					<input type="button" value="Wyloguj się" onclick="/logout" />
-
+				</ul>
+				<input type="button" value="Wyloguj się" onclick="window.location.href='/logout';" />
 				
 			
 			</div>
