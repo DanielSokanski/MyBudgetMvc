@@ -18,7 +18,11 @@
 
 </head>
 <body>
-
+	{% for message in flash_messages %}
+	<div class="alert alert-{{ message.type }}">
+		{{ message.body }}
+	</div>
+	{% endfor %}	
 <header>
 		<div class="logo text-center">
 			<h1> BUDŻET DOMOWY </h1>

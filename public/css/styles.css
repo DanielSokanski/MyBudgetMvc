@@ -158,8 +158,8 @@ input:focus:-ms-input-placeholder
 {
 	display:inline-block;
 	font-size:25px;
-	border:2px solid #37b93d;
-	border-radius:5px;
+	border:2px solid #999;
+	border-radius:20px;
 	height:100px;
 }
 
