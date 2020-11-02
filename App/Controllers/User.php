@@ -55,4 +55,11 @@ class Signup extends \Core\Controller
         View::renderTemplate('Signup/success.html');
     }
 
+    public function incomesCategoriesAction()
+    {
+        $user = new User($_POST);
+        $user->showIncomeCategories();
+        
+    }
+
 }

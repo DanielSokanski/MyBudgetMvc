@@ -37,7 +37,9 @@
 			
 
 			<div class="dropdown">
-				
+				<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Wybierz okres
+				  </button>
                 <div class="dropdown-content" aria-labelledby="dropdownContent">
                     <a href="/balances/current" class="dropdown-item">1. Bieżący miesiąc</a>
                     <a href="/balances/previous" class="dropdown-item">2. Poprzedni miesiąc</a>
@@ -46,7 +48,7 @@
 			</div>
 		
 			
-			<div class="col-sm-6col-md-6 text-center text-dark">
+			<div class="col-sm-6col-md-6 mt-5 text-center text-dark">
 				<button type="button" class="btn bg-light" data-toggle="modal" data-target="#dateModal">4. Niestandardowy okres</button>
 			</div>
 
@@ -107,7 +109,7 @@
 		<div class="col-sm-12 col-md-12 mt-4 text-dark bg-light font-weight-bold text-center">
 			{% if  (totalIncomesAmount - totalExpensesAmount >= 0) %}
             	{{ balance }} zł
-                <p class="card-footer text-success bg-success font-weight-bold text-center">Gratulacje. Świetnie zarządzasz finansami!</p>
+                <p class="card-footer text-light bg-success font-weight-bold text-center">Gratulacje. Świetnie zarządzasz finansami!</p>
 			{% endif %}
 			
 			{% if  (totalIncomesAmount - totalExpensesAmount < 0) %}

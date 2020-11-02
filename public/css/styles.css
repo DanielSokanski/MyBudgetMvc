@@ -247,12 +247,11 @@ input:focus:-ms-input-placeholder
 	position: relative;
 	display: inline-block;
   }
-
-  .dropdown-content 
+  .dropdown-content {
 	display: none;
 	position: absolute;
 	background-color: #f1f1f1;
-	min-width: 160px;
+    min-width: 160px;
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	z-index: 1;
   }
@@ -267,9 +266,3 @@ input:focus:-ms-input-placeholder
   .dropdown:hover .dropdown-content {display: block;}
 
   .dropdown:hover .dropbtn {background-color: #3e8e41;}
-
-  .icon-logout
-  {
-	  background-color: #6e0e16;
-	  color: #efefef;
-  }

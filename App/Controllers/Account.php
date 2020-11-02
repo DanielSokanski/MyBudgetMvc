@@ -32,5 +32,8 @@ class Account extends \Core\Controller
     {
         View::renderTemplate('Bilans/index.html');
     }
-
+    public function settingsAction()
+    {
+        View::renderTemplate('Settings/index.html');
+    }
 }

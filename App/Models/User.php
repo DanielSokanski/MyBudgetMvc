@@ -90,13 +90,18 @@ class User extends \Core\Model
         return false;
     }
 
+    public function showIncomeCategories()
+{
+    $user_id =  $_SESSION['user_id'];
+    $sql_incomes_cat = 'SELECT incomes_category_assigned_to_users.name as incomesName FROM incomes_category_assigned_to_users
+     WHERE incomes_category_assigned_to_users.user_id=:user_id';
+    $sql_incomes_ca_result = $db->prepare($sql_incomes_cat);
+    $sql_incomes_ca_result->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    $sql_incomes_ca_result->execute();
 
-	
+    return $sql_incomes_ca_result->fetchAll();
+}	
 
-
-
-
-        
 
         
     /**

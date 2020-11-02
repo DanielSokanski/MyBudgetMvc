@@ -1,0 +1,79 @@
+{% extends 'base1.html' %}
+
+{% block title %}Ustawienia{% endblock %}
+{% block script %}
+<script>
+	$(document).ready(function userIncomesCategories(){
+		$("#dropdownIncomeMenuButton").click(function(){
+			var xhttp = new XMLHttpRequest();
+			//xhttp.onreadystatechange = function() {
+		//};
+	xhttp.open("POST", "/user/incomesCategories", true);
+  	xhttp.send();
+ });
+ </script>
+{% endblock %}
+{% block body %}
+	<div class="container">	
+
+		<div class="row">
+
+			<div class="col-sm-12 col-md-12 mt-4 text-dark font-weight-bold text-center">
+				<h2>Ustawienia</h2>
+				<p>Wybierz poniższe formularze by nanieść zmiany.</p>
+			</div>
+
+		</div>
+		<div class="row">
+
+
+			<div class="col-sm-12 col-md-12 text-dark text-center mt-3 font-weight-bold border border-dark">
+				
+					<button type="button" id="btn">
+					  KATEGORIE PRZYCHODÓW
+					</button>
+					
+						{% for incomesName in user %}
+					<div id="userIncomes">{{ incomesName }}</div>
+						{% endfor %}
+					
+				  
+				
+			</div>
+			<div class="col-sm-12 col-md-12 text-dark text-center mt-3 font-weight-bold border border-dark">
+					<div class="dropdown">
+						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						  KATEGORIE WYDATKÓW
+						</button>
+						<div class="dropdown-content">
+						  <a class="dropdown-item" href="#">Action</a>
+						</div>
+					  </div>
+					
+			</div>
+			<div class="col-sm-12 col-md-12 text-dark text-center mt-3 font-weight-bold border border-dark">
+					<div class="dropdown">
+						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						  KATEGORIE WYDATKÓW
+						</button>
+						<div class="dropdown-content">
+						  <a class="dropdown-item" href="#">Action</a>
+						</div>
+					  </div>
+					
+				</div>
+				<div class="col-sm-12 col-md-12 text-dark text-center mt-3 font-weight-bold border border-dark">
+					<div class="dropdown">
+						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						  DANE UŻYTKOWNIKA
+						</button>
+						<div class="dropdown-content">
+						<a class="dropdown-item" href="#">Nazwa: {{ current_user.username }}</a>
+						<a class="dropdown-item" href="#">Adres email: {{ current_user.email }}</a>
+					    </div>
+					 </div>
+				</div>
+		</div>
+
+	</div>	
+{% endblock %}
