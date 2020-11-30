@@ -17,10 +17,12 @@ class Income extends \Core\Controller
 		if ($income->addRecordIncome())
 		{
             Flash::addMessage('Udało się! Dodałeś poprawnie przychod');
-			View::renderTemplate('AddIncome/index.html'); 
+            $incomes = [];
+            $incomes['inCategories']= Incomes::showIncomeList();
+			View::renderTemplate('AddIncome/index.html', $incomes); 
 		}
         else {
-			Flash::addMessage('Niepoprawne dane. Sprubuj ponownie.',Flash::WARNING);
+			Flash::addMessage('Niepoprawne dane. Spróbuj ponownie.',Flash::WARNING);
             View::renderTemplate('AddIncome/index.html');
         }
     

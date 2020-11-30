@@ -57,9 +57,9 @@ class Signup extends \Core\Controller
 
     public function incomesCategoriesAction()
     {
-        $user = new User($_POST);
-        $user->showIncomeCategories();
-        
+        $incomes = [];
+        $incomes['inCategories']= User::showIncomeCategories();
+        View::renderTemplate('/Settings/index.html', $incomes);
     }
 
 }

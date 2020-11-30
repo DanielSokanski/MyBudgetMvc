@@ -43,4 +43,5 @@ $router->add('addIncome',['controller' => 'Account', 'action' => 'addIncome']);
 $router->add('MainMenu',['controller' => 'Account', 'action' => 'MainMenu']);
 $router->add('bilans',['controller' => 'Account', 'action' => 'bilans']);
 $router->add('settings',['controller' => 'Account', 'action' => 'settings']);
+
 $router->dispatch($_SERVER['QUERY_STRING']);

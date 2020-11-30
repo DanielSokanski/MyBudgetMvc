@@ -17,12 +17,20 @@ class Expense extends \Core\Controller
 		if ($expense->addRecordExpense())
 		{
             Flash::addMessage('Udało się! Dodałeś poprawnie wydatek');
-            View::renderTemplate('AddExpence/index.html');
+            $expenses = [];
+            $expenses['exCategories']= Expenses::showExpenseList();
+            View::renderTemplate('AddExpence/index.html', $expenses);
 		}
         else {
 			Flash::addMessage('Niepoprawne dane. Sprubuj ponownie.',Flash::WARNING);
             View::renderTemplate('AddExpence/index.html');
         }
     
+    }
+    public function calculateExpense()
+    {
+        $kategoria = $_POST['kategoria'];
+        $kwota = $_POST['kwota'];
+        Expenses::showCalculation($kategoria, $kwota);
     }
 }

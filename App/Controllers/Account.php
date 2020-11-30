@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use \App\Models\User;
 use \App\Models\Balance;
+use \App\Models\Incomes;
+use \App\Models\Expenses;
 use \Core\View;
 use \App\Auth;
 use \App\Flash;
@@ -18,11 +20,17 @@ class Account extends \Core\Controller
 {
 	    public function addExpenceAction()
     {
-        View::renderTemplate('AddExpence/index.html');
+        $new_expense_list = [];
+        $new_expense_list['updateExpense'] = Expenses::showExpenseList();
+        $new_expense_list['updatePaymentMethods'] = Expenses::showPaymentMethods();
+        View::renderTemplate('AddExpence/index.html', $new_expense_list);
     }
 	    public function addIncomeAction()
     {
-        View::renderTemplate('AddIncome/index.html');
+        $new_income_list = [];
+        $new_income_list['updateIncome'] = Incomes::showIncomeList();
+        View::renderTemplate('Addincome/index.html', $new_income_list);
+    
     }
 	    public function MainMenuAction()
     {

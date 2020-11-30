@@ -2,16 +2,60 @@
 
 {% block title %}Ustawienia{% endblock %}
 {% block script %}
-<script>
-	$(document).ready(function userIncomesCategories(){
-		$("#dropdownIncomeMenuButton").click(function(){
-			var xhttp = new XMLHttpRequest();
-			//xhttp.onreadystatechange = function() {
-		//};
-	xhttp.open("POST", "/user/incomesCategories", true);
-  	xhttp.send();
- });
- </script>
+	<script>
+	$(document).ready(function(){
+		$("#incomebtn").click(function(e){
+			e.preventDefault();
+			$.ajax({
+     		 type: "post",
+			 url: "/setting/incomesCategories",
+			 data: $('#incomelist').serialize(),
+			 dataType: "html",
+			 success : function(response) {
+			   $("#incomeDisplay").html(response);
+			 }
+			});
+			
+		})
+		$("#expensebtn").click(function(e){
+			e.preventDefault();
+			$.ajax({
+     		 type: "post",
+			 url: "/setting/expenseCategories",
+			 data: $('#expenselist').serialize(),
+			 dataType: "html",
+			 success : function(response) {
+			   $("#expenseDisplay").html(response);
+			 }
+			});
+		})
+		$("#paymentbtn").click(function(e){
+			e.preventDefault();
+			$.ajax({
+     		 type: "post",
+			 url: "/setting/paymentMethod",
+			 data: $('#paymentlist').serialize(),
+			 dataType: "html",
+			 success : function(response) {
+			   $("#paymentDisplay").html(response);
+			 }
+			});
+		})
+		$("#userbtn").click(function(e){
+			e.preventDefault();
+			$.ajax({
+     		 type: "post",
+			 url: "/setting/userData",
+			 data: $('#userlist').serialize(),
+			 dataType: "html",
+			 success : function(response) {
+			   $("#userDisplay").html(response);
+			 }
+			});
+		})
+		
+	});
+	</script>
 {% endblock %}
 {% block body %}
 	<div class="container">	
@@ -25,55 +69,351 @@
 
 		</div>
 		<div class="row">
-
-
-			<div class="col-sm-12 col-md-12 text-dark text-center mt-3 font-weight-bold border border-dark">
-				
-					<button type="button" id="btn">
-					  KATEGORIE PRZYCHODÓW
-					</button>
-					
-						{% for incomesName in user %}
-					<div id="userIncomes">{{ incomesName }}</div>
-						{% endfor %}
-					
-				  
-				
+			<div id="incomeDisplay" class="col-sm-12 col-md-12 text-dark text-center mt-3 font-weight-bold">
+					<form id="incomes" method="post">
+					<p><input type="submit" class="btn btn-susscess btn-lg btn-block active" name="displaybtn" id="incomebtn" aria-pressed="true" value="Kategorie przychodów"></p>	
+					</form>		
+					<div id="incomelist"></div> 
 			</div>
-			<div class="col-sm-12 col-md-12 text-dark text-center mt-3 font-weight-bold border border-dark">
-					<div class="dropdown">
-						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						  KATEGORIE WYDATKÓW
+			<div id="expenseDisplay" class="col-sm-12 col-md-12 text-dark text-center mt-3 font-weight-bold">
+				<form id="expenses" method="post">
+					<p><input type="submit" class="btn btn-susscess btn-lg btn-block active" name="displaybtn" id="expensebtn" aria-pressed="true" value="Kategorie wydatków"></p>	
+					</form>		
+					<div id="expenselist"></div> 
+			</div>		
+			<div id="paymentDisplay" class="col-sm-12 col-md-12 text-dark text-center mt-3 font-weight-bold">
+				<form id="payment" method="post">
+					<p><input type="submit" class="btn btn-susscess btn-lg btn-block active" name="displaybtn" id="paymentbtn" value="Kategorie płatności"></p>	
+					</form>		
+					<div id="paymentlist"></div> 
+			</div>		
+			<div id="userDisplay" class="col-sm-12 col-md-12 text-dark text-center mt-3 font-weight-bold">
+				<form id="userD" method="post">
+					<p><input type="submit" class="btn btn-susscess btn-lg btn-block active" name="displaybtn" id="userbtn" value="Dane użytkownika"></p>	
+					</form>		
+					<div id="userlist"></div> 
+			</div>	
+
+		</div>
+		<div class="modal" tabindex="-1" role="dialog" id="editExpense">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Edycja pola wydatków</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
 						</button>
-						<div class="dropdown-content">
-						  <a class="dropdown-item" href="#">Action</a>
+					</div>
+					<form action="/setting/changeExpense" method='post'>
+						<div class="modal-body">
+							<p>Nowa nazwa:
+							<input type="hidden" name="exCatOld" id="exCatOld" value="">
+						    <input type='text' name="exCat" id="exCat" value=""></p>
+							<p><input type="checkbox" id="scales" name="limit" onclick="this.form.elements['IncomeLimit'].disabled = !this.checked">
+							<label for="limit">Ustal limit</label></p>
+							<p><input type="number" name="expenseLimit" id="expenseLimit"> </p>
 						</div>
-					  </div>
-					
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+							<button type="submit" class="btn btn-primary">Zapisz</button>
+						</div>
+					</form>
+				</div>
 			</div>
-			<div class="col-sm-12 col-md-12 text-dark text-center mt-3 font-weight-bold border border-dark">
-					<div class="dropdown">
-						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						  KATEGORIE WYDATKÓW
+		</div>
+		<script type="text/javascript">
+			$(document).on("click", ".open-AddBookDialog", function () {
+				 var myBookId = $(this).data('id');
+				 $(".modal-body #exCatOld").val( myBookId );
+				 $(".modal-body #exCat").val( myBookId );
+			});
+			</script>
+		<div class="modal" tabindex="-1" role="dialog" id="editIncome">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Edycja pola przychodów</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
 						</button>
-						<div class="dropdown-content">
-						  <a class="dropdown-item" href="#">Action</a>
+					</div>
+					<form action="/setting/changeIncome" method='post'>
+						<div class="modal-body">
+							<p>Nowa nazwa:
+							<input type="hidden" name="incCatOld" id="incCatOld" value="">
+						    <input type='text' name="incCat" id="incCat" value=""></p>
 						</div>
-					  </div>
-					
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+							<button type="submit" class="btn btn-primary">Zapisz</button>
+						</div>
+					</form>
 				</div>
-				<div class="col-sm-12 col-md-12 text-dark text-center mt-3 font-weight-bold border border-dark">
-					<div class="dropdown">
-						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						  DANE UŻYTKOWNIKA
+			</div>
+		</div>
+	
+		<script type="text/javascript">
+		$(document).on("click", ".open-AddBookDialog", function () {
+     		var myBookId = $(this).data('id');
+			 $(".modal-body #incCat").val( myBookId );
+			 $(".modal-body #incCatOld").val( myBookId );
+		});
+		</script>
+
+<div class="modal" tabindex="-1" role="dialog" id="editName">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Edycja nazwy użytkownika</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form action="/setting/changeName" method='post'>
+				<div class="modal-body">
+					<p>Nowa nazwa:
+					<input type="hidden" name="oldName" id="oldName" value="">
+					<input type='text' name="newName" id="newName" value=""></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+					<button type="submit" class="btn btn-primary">Zapisz</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).on("click", ".name", function () {
+		 var myBookId = $(this).data('id');
+		 $(".modal-body #oldName").val( myBookId );
+		 $(".modal-body #newName").val( myBookId );
+	});
+	</script>
+
+<div class="modal" tabindex="-1" role="dialog" id="editMail">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Edycja konta mailowego</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form action="/setting/changeMail" method='post'>
+				<div class="modal-body">
+					<p>Nowy adres mail:
+					<input type="hidden" name="oldEmail" id="oldEmail" value="">
+					<input type='text' name="newEmail" id="newEmail" value=""></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+					<button type="submit" class="btn btn-primary">Zapisz</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).on("click", ".mail", function () {
+		 var myBookId = $(this).data('id');
+		 $(".modal-body #oldMail").val( myBookId );
+		 $(".modal-body #newMail").val( myBookId );
+	});
+	</script>
+		<div class="modal" tabindex="-1" role="dialog" id="addIncomeCat">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Dodaj nazwę kategorii</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
 						</button>
-						<div class="dropdown-content">
-						<a class="dropdown-item" href="#">Nazwa: {{ current_user.username }}</a>
-						<a class="dropdown-item" href="#">Adres email: {{ current_user.email }}</a>
-					    </div>
-					 </div>
+					</div>
+					<form action="/setting/addIncomeCategory" method='post'>
+						<div class="modal-body">
+							<p>Nowa kategoria:
+							<input type="text" name="newIncCat" id="newIncCat" value=""></p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+							<button type="submit" class="btn btn-primary">Zapisz</button>
+						</div>
+					</form>
 				</div>
+			</div>
+		</div>	
+		<div class="modal" tabindex="-1" role="dialog" id="addExpenseCat">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Dodaj nazwę kategorii</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form action="/setting/addExpenseCategory" method='post'>
+						<div class="modal-body">
+							<p>Nowa kategoria:
+							<input type="text" name="newExpCat" id="newExpCat" value=""></p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+							<button type="submit" class="btn btn-primary">Zapisz</button>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
 
-	</div>	
+		
+		<div class="modal" tabindex="-1" role="dialog" id="addPaymentCat">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Dodaj nazwę kategorii</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form action="/setting/addPaymentCategory" method='post'>
+						<div class="modal-body">
+							<p>Nowa kategoria:
+							<input type="text" name="newPayCat" id="newPayCat" value=""></p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+							<button type="submit" class="btn btn-primary">Zapisz</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="modal" tabindex="-1" role="dialog" id="eraseIncome">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Czy na pewno usunąć wybraną kategorię?</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form action="/setting/eraseIncomeCategory" method='post'>
+						<div class="modal-body">
+							<p>Nazwa usuwanej kategorii:
+								<input type="hidden" name="eraseCat" id="eraseCat" value="">
+								<input type='text' name="eraseCatName" id="eraseCatName" value="" disabled></p>
+							<p>Wszystkie dane zostaną przeniesione do kategorii "Inne"</p>	
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+							<button type="submit" class="btn btn-primary">Usuń</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(document).on("click", ".open-erase", function () {
+				
+				erase = $(this).data('id');
+				 $(".modal-body #eraseCat").val( erase );
+				 $(".modal-body #eraseCatName").val( erase );
+			});
+			</script>
+		<div class="modal" tabindex="-1" role="dialog" id="eraseExpense">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Czy na pewno usunąć wybraną kategorię?</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form action="/setting/eraseExpenseCategory" method='post'>
+						<div class="modal-body">
+							<p>Nazwa usuwanej kategorii:
+								<input type="hidden" name="eraseCatE" id="eraseCatE" value="">
+								<input type='text' name="eraseCatNameE" id="eraseCatNameE" value="" disabled></p>
+							<p>Wszystkie dane zostaną przeniesione do kategorii "Inne wydatki"</p>	
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+							<button type="submit" class="btn btn-primary">Usuń</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(document).on("click", ".open-eraseE", function () {
+				
+				erase = $(this).data('id');
+				 $(".modal-body #eraseCatE").val( erase );
+				 $(".modal-body #eraseCatNameE").val( erase );
+			});
+			</script>
+		<div class="modal" tabindex="-1" role="dialog" id="editPayment">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Edycja płatności</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form action="/setting/changePayment" method='post'>
+						<div class="modal-body">
+							<p>Nowa nazwa:
+							<input type="hidden" name="exCatOldPayment" id="exCatOldPayment" value="">
+						    <input type='text' name="exCatPayment" id="exCatPayment" value=""></p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+							<button type="submit" class="btn btn-primary">Zapisz</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(document).on("click", ".open-AddBookDialogPayment", function () {
+				 var myBookId = $(this).data('id');
+				 $(".modal-body #exCatOldPayment").val( myBookId );
+				 $(".modal-body #exCatPayment").val( myBookId );
+			});
+			</script>
+		<div class="modal" tabindex="-1" role="dialog" id="erasePayment">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Czy na pewno usunąć wybraną kategorię?</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form action="/setting/erasePaymentCategory" method='post'>
+						<div class="modal-body">
+							<p>Nazwa usuwanej kategorii:
+								<input type="hidden" name="eraseCatP" id="eraseCatP" value="">
+								<input type='text' name="eraseCatNameP" id="eraseCatNameP" value="" disabled></p>
+							<p>Wszystkie dane zostaną przeniesione do kategorii "Inne formy płatności"</p>	
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+							<button type="submit" class="btn btn-primary">Usuń</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(document).on("click", ".open-eraseP", function () {
+				
+				erase = $(this).data('id');
+				 $(".modal-body #eraseCatP").val( erase );
+				 $(".modal-body #eraseCatNameP").val( erase );
+			});
+			</script>
+	</div>
 {% endblock %}

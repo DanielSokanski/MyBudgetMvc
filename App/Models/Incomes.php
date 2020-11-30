@@ -62,4 +62,15 @@ class Incomes extends \Core\Model
 
         return $category_result['id'];
         }
+        public static function showIncomeList()
+        {
+        $user_id = $_SESSION['user_id'];
+        $db = static::getDB();
+        $sql_updateInclist = 'SELECT name as IncomeName FROM incomes_category_assigned_to_users WHERE user_id=:user_id';
+
+        $sql_updateInclist_result = $db->prepare($sql_updateInclist);
+        $sql_updateInclist_result->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $sql_updateInclist_result->execute();
+        return $sql_updateInclist_result->fetchAll();
+        }
 }
