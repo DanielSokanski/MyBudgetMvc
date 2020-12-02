@@ -10,7 +10,7 @@ use \App\Models\User;
  *
  * PHP version 7.0
  */
-class Signup extends \Core\Controller
+class Users extends \Core\Controller
 {
 
     /**
@@ -32,11 +32,12 @@ class Signup extends \Core\Controller
     {
         $user = new User($_POST);
 
-        if (($user->save())  {
-		
-            $this->redirect('/signup/success');
-
-        } else {
+        if ($user->save())  
+        {
+            View::renderTemplate('Signup/success.html');
+        } 
+        else 
+        {
 			Flash::addMessage('Uzytkownik istneje');
             View::renderTemplate('Login/new.html', [
                 'user' => $user

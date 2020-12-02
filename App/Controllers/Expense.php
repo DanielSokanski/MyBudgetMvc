@@ -17,9 +17,10 @@ class Expense extends \Core\Controller
 		if ($expense->addRecordExpense())
 		{
             Flash::addMessage('Udało się! Dodałeś poprawnie wydatek');
-            $expenses = [];
-            $expenses['exCategories']= Expenses::showExpenseList();
-            View::renderTemplate('AddExpence/index.html', $expenses);
+            $new_expense_list = [];
+            $new_expense_list['updateExpense'] = Expenses::showExpenseList();
+            $new_expense_list['updatePaymentMethods'] = Expenses::showPaymentMethods();
+            View::renderTemplate('AddExpence/index.html', $new_expense_list);
 		}
         else {
 			Flash::addMessage('Niepoprawne dane. Sprubuj ponownie.',Flash::WARNING);

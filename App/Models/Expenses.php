@@ -123,11 +123,10 @@ class Expenses extends \Core\Model
              $month = $current_date->format('m');
              $year = $current_date->format('Y');
              $idOfCategory =  $row['id'];
-             
+             if ($row['limit_wydatkow']>0)
+             {
             $firstDay = $year.'-'.$month.'-'.'01';
-             
             $lastDay = $year.'-'.$month.'-'.'31'; 
-           
             $sql_cat_calculation = 'SELECT sum(amount) as catExpenses, expense_category_assigned_to_users FROM expenses WHERE
             expenses.expense_category_assigned_to_users = :idOfCategory AND user_id=:user_id AND date_of_expense BETWEEN :firstDay AND :lastDay'; 
             $sql_cat_calculation_result = $db->prepare($sql_cat_calculation);
@@ -138,8 +137,9 @@ class Expenses extends \Core\Model
             $sql_cat_calculation_result->execute();    
             $newRow = $sql_cat_calculation_result->fetch(PDO::FETCH_ASSOC);
             $alreadySpend = $newRow['catExpenses'];
-            $difference = $row['limit_wydatkow'] - $kwota;
-
+            $difference = $row['limit_wydatkow'] - $alreadySpend;
+            if ($difference>0)
+            {
             echo "
             <div class='col-sm-12 col-md-12 mt-2 text-center text-dark font-weight-bold bg-light' style='width:800px; margin:0 auto;'>
             <b>Informacje o limicie.</b>Moszesz jeszcze wydać <b>$difference zł</b> w kategorii <b>$kategoria</b></div>
@@ -157,6 +157,28 @@ class Expenses extends \Core\Model
                  <td class='border border-dark' style='width: 25%'>$difference</td>
                  <td class='border border-dark' style='width: 30%'>$kwota</td>
              </tr></tbody></table></div>"; 
+            }
+            else
+            {
+                echo "
+            <div class='col-sm-12 col-md-12 mt-2 text-center text-dark font-weight-bold bg-danger' style='width:800px; margin:0 auto;'>
+            <b>Informacje o limicie.</b>Już wyłaciłeś więcej o <b>$difference zł</b> w kategorii <b>$kategoria</b> niż zakładał ustalony limit</div>
+             ";
+             echo"
+             <div style='width:800px; margin:0 auto;'>
+             <table class='bg-danger'><thead><tr>
+                 <th class='border border-light' style='width: 25%'>Ustalony limit</th>
+                 <th class='border border-light' style='width: 25%'>Dotychczas wydano</th>
+                 <th class='border border-light' style='width: 25%'>Różnica</th>
+                 <th class='border border-light' style='width: 30%'>Wydatki + wpisana kwota</th>
+             </tr></thead><tbody><tr>
+                 <td class='border border-light' style='width: 25%'>$row[limit_wydatkow]</td>
+                 <td class='border border-light' style='width: 25%'>$alreadySpend</td>
+                 <td class='border border-light' style='width: 25%'>$difference</td>
+                 <td class='border border-light' style='width: 30%'>$kwota</td>
+             </tr></tbody></table></div>"; 
+            }
+             }
          }
         }
 }

@@ -29,7 +29,7 @@ class Account extends \Core\Controller
     {
         $new_income_list = [];
         $new_income_list['updateIncome'] = Incomes::showIncomeList();
-        View::renderTemplate('Addincome/index.html', $new_income_list);
+        View::renderTemplate('AddIncome/index.html', $new_income_list);
     
     }
 	    public function MainMenuAction()
