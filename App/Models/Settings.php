@@ -313,7 +313,7 @@ class Settings extends \Core\Model
         $newID = $iidCatOther['id'];
      
             //ustawienie poprawnego id w tabeli expeses dla rekordow usuwanej kategorii
-        $alterCatNo_sql = 'UPDATE expenses SET expences_category_assigned_to_users=:newID WHERE user_id=:user_id AND expense_category_assigned_to_user_id=:oldID';
+        $alterCatNo_sql = 'UPDATE expenses SET expense_category_assigned_to_users=:newID WHERE user_id=:user_id AND expense_category_assigned_to_users=:oldID';
         $alterCatNo_result = $db->prepare($alterCatNo_sql);
         $alterCatNo_result->bindValue(':user_id', $user_id, PDO::PARAM_INT);
         $alterCatNo_result->bindValue(':newID', $newID, PDO::PARAM_INT);

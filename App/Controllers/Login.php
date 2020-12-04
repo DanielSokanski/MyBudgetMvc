@@ -40,7 +40,7 @@ class Login extends \Core\Controller
 
             Auth::login($user, $remember_me);
 
-            Flash::addMessage('Login successful');
+            Flash::addMessage('Zalogowałeś się poprawnie');
 
             View::renderTemplate('MainMenu/index.html');
 			
@@ -77,7 +77,7 @@ class Login extends \Core\Controller
      */
     public function showLogoutMessageAction()
     {
-        Flash::addMessage('Logout successful');
+        Flash::addMessage('Wylogowałeś się poprawnie');
 
         $this->redirect('/');
     }
